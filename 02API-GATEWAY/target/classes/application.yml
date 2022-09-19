@@ -1,0 +1,29 @@
+#configure server port number
+server:
+  port: 9100
+  
+#configuring app name and gateway routes
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
+      routes:
+        - id: MS-DOCTOR-SERVICE
+          uri: lb://MS-DOCTOR-SERVICE
+          predicates:
+             - Path=/doctor/**
+        - id: MS-PATIENT-SERVICE
+          uri: lb://MS-PATIENT-SERVICE
+          predicates:
+             - Path=/patient/**
+        
+        
